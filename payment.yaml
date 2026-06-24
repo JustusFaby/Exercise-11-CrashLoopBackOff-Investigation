@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: payment
+  template:
+    metadata:
+      labels:
+        app: payment
+    spec:
+      containers:
+      - name: payment
+        image: busybox
+        command:
+          - sh
+          - -c
+          - |
+            echo "Connecting to DB..."
+            nc -z postgres-service 5432 || exit 1
+            sleep 3600
